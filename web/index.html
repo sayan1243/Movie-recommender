@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Find your next favorite film with thoughtful, content-based movie recommendations."
+    />
+    <meta name="theme-color" content="#f5f4ef" />
+    <title>Frame — Movie Recommender</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Frame home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 4.75h14v14.5H5z" stroke="currentColor" stroke-width="1.7" />
+            <path d="m10 9 5 3-5 3V9Z" fill="currentColor" />
+          </svg>
+        </span>
+        <span>frame<span class="brand-period">.</span></span>
+      </a>
+      <div class="topbar-note">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>YOUR NEXT WATCH, FOUND</span>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span>THE MOVIE FINDER</span><span class="eyebrow-line"></span></p>
+          <h1 id="hero-title">A good film<br />leads to <em>another.</em></h1>
+          <p class="hero-description">
+            Pick a movie you love. We’ll find the stories, worlds, and filmmakers
+            that make your next watch feel just right.
+          </p>
+          <a class="hero-link" href="#movie-search">
+            Find your next film
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M4 10h11m-4-4 4 4-4 4" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="art-center">
+            <span class="art-center-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 5h14v14H5z" stroke="currentColor" stroke-width="1.4" />
+                <path d="m10 9 5 3-5 3V9Z" fill="currentColor" />
+              </svg>
+            </span>
+            <span>GOOD STORIES<br />FIND EACH OTHER</span>
+          </div>
+          <span class="orbit-label label-top">PLOT</span>
+          <span class="orbit-label label-right">MOOD</span>
+          <span class="orbit-label label-bottom">CAST</span>
+          <span class="orbit-label label-left">GENRE</span>
+          <span class="art-spark spark-one">✳</span>
+          <span class="art-spark spark-two">✳</span>
+        </div>
+
+        <div class="hero-footer">
+          <span class="hero-footnote">CURATED BY CONTENT, NOT BY CHARTS</span>
+          <span class="hero-index">01 <i></i> 03</span>
+        </div>
+      </section>
+
+      <section class="discovery" id="movie-search" aria-labelledby="search-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">START WITH A FAVORITE</p>
+            <h2 id="search-title">What are you in the mood for?</h2>
+          </div>
+          <div class="library-count" id="library-count" aria-live="polite">
+            <span class="count-dot"></span>
+            <span>Loading film library</span>
+          </div>
+        </div>
+
+        <form class="search-form" id="search-form" autocomplete="off">
+          <div class="search-field-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.7" />
+              <path d="m16 16 4.1 4.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+            </svg>
+            <label class="visually-hidden" for="movie-query">Search for a movie</label>
+            <input
+              id="movie-query"
+              name="movie"
+              type="search"
+              placeholder="Try a title like The Grand Budapest Hotel..."
+              aria-autocomplete="list"
+              aria-controls="movie-suggestions"
+              aria-expanded="false"
+              spellcheck="false"
+              required
+            />
+            <kbd class="input-hint">↵</kbd>
+            <div class="suggestions" id="movie-suggestions" role="listbox" hidden></div>
+          </div>
+          <button class="submit-button" id="recommend-button" type="submit" disabled>
+            <span>Find similar films</span>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M3.5 10h12m-4.5-4.5L15.5 10 11 14.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </form>
+        <p class="search-hint" id="search-hint" aria-live="polite">
+          Start typing to search 4,797 films.
+        </p>
+
+        <section class="results" id="results" aria-live="polite" aria-busy="false" hidden>
+          <div class="results-heading">
+            <div>
+              <p class="section-kicker">YOUR NEXT DOUBLE FEATURE</p>
+              <h2 id="results-title">Because you liked <span></span></h2>
+            </div>
+            <button class="text-button" id="change-movie" type="button">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M15.5 8A5.6 5.6 0 0 0 5.2 6.6L4 8m0 0V4.8M4 8h3.2m-2.7 4A5.6 5.6 0 0 0 14.8 13.4L16 12m0 0v3.2M16 12h-3.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Choose another
+            </button>
+          </div>
+          <div class="recommendation-list" id="recommendation-list"></div>
+          <p class="results-note">
+            <span class="note-star">✳</span>
+            Matched by story, genres, cast, and creative team.
+          </p>
+        </section>
+
+        <div class="error-message" id="error-message" role="alert" hidden></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a class="footer-brand" href="/">frame<span>.</span></a>
+      <p>For the love of a good story.</p>
+      <span class="footer-credit">BUILT FOR YOUR NEXT MOVIE NIGHT</span>
+    </footer>
+  </body>
+</html>
