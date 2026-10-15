@@ -1,63 +1,106 @@
-# Movie Recommender System
+# Frame — Movie Recommender
 
-A content-based movie recommender with a FastAPI backend and a responsive web
-interface. It compares each movie's overview, genres, keywords, cast, and
-director to find five similar films.
+[![Live demo](https://img.shields.io/badge/Live%20demo-Open%20Frame-526c45?style=for-the-badge)](https://movie-recommender-v4cr.onrender.com)
 
-## Run on Windows
+Frame is a content-based movie recommendation app. Search a title to discover
+five films with similar stories, genres, keywords, cast, and directors. The
+project pairs a FastAPI backend with a responsive web interface.
 
-1. Install Python 3.10 or newer (Python 3.12 is recommended).
-2. Open PowerShell in this folder and create/activate a virtual environment:
+**[Try the live demo](https://movie-recommender-v4cr.onrender.com)** ·
+**[API documentation](https://movie-recommender-v4cr.onrender.com/docs)**
 
-   ```powershell
-   py -3.12 -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   ```
+## Screenshots
 
-   If PowerShell blocks activation, run the commands below using
-   `.venv\Scripts\python.exe` instead of `python`.
+| Discover movies | Similar recommendations |
+| --- | --- |
+| ![Frame movie discovery screen](screenshots/hero.png) | ![Recommendations for Avatar](screenshots/recommendations.png) |
 
-3. Install dependencies and build the local model:
+## Features
 
-   ```powershell
-   python -m pip install --upgrade pip
-   python -m pip install -r requirements.txt
-   python build_model.py
-   ```
+- Search a library of more than 4,700 movies by title.
+- Get five recommendations ranked by cosine similarity.
+- Compare movie overviews, genres, keywords, cast, and directors.
+- Use the responsive web interface or call the JSON API directly.
+- Run locally or deploy to Render using the included Blueprint.
 
-   The model builder downloads the TMDB 5000 movie metadata and credits into
-   `data\`, then creates the recommendation model in `model\`. These generated
-   files are local and are excluded from version control.
+## Run locally on Windows
 
-4. Start the FastAPI server:
+### Requirements
 
-   ```powershell
-   python -m uvicorn app:app --host 127.0.0.1 --port 8000 --reload
-   ```
+- Python 3.10 or newer (Python 3.12 is recommended)
+- Git
+- An internet connection for the first-time dataset download
 
-   Open http://127.0.0.1:8000 in your browser. Interactive API documentation
-   is available at http://127.0.0.1:8000/docs.
+### Setup
 
-The API provides movie search at `/api/movies?q=...`, recommendations at
-`/api/movies/{movie_id}/recommendations`, and service status at `/api/health`.
-The web interface is served by FastAPI from the `web\` folder.
+Open PowerShell in the project directory and create a virtual environment:
 
-## Deploy to Render
+```powershell
+git clone https://github.com/sayan1243/Movie-recommender.git
+cd Movie-recommender
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-The included `render.yaml` defines a free Render web service. In Render:
+If you have another supported Python version, replace `-3.12` with that version
+(for example, `-3.10`).
 
-1. Sign in at https://dashboard.render.com/ and connect your GitHub account.
-2. Select **New > Blueprint** and choose the `sayan1243/Movie-recommender`
+If PowerShell blocks environment activation, use `.venv\Scripts\python.exe`
+instead of `python` for the following commands.
+
+Install dependencies and build the recommendation model:
+
+```powershell
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python build_model.py
+```
+
+The model builder downloads the TMDB 5000 movie metadata and credits to `data\`,
+then creates the model in `model\`. These generated files are excluded from Git.
+
+Start the app:
+
+```powershell
+python -m uvicorn app:app --host 127.0.0.1 --port 8000 --reload
+```
+
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser. Interactive
+API documentation is available at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+
+## API
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/api/health` | Service status and movie count |
+| `GET` | `/api/movies?q=avatar` | Search movies by title; optional `limit` (1–20, default 8) |
+| `GET` | `/api/movies/{movie_id}/recommendations` | Get similar movies; optional `limit` (1–10, default 5) |
+
+The web interface is served by FastAPI from the `web\` directory. API schemas
+and a try-it-out console are available at `/docs`.
+
+## Deploy on Render
+
+The included [`render.yaml`](render.yaml) configures a free Render web service.
+
+1. Sign in to [Render](https://dashboard.render.com/) and connect your GitHub account.
+2. Select **New > Blueprint**, then choose the
+   [`sayan1243/Movie-recommender`](https://github.com/sayan1243/Movie-recommender)
    repository.
-3. Review the service configuration and click **Apply**. Render builds the
-   recommendation model from the dataset during deployment, then starts the
-   FastAPI server.
-4. Open the `onrender.com` URL shown on the service page after the deploy
-   finishes.
+3. Review the Blueprint configuration and select **Apply**.
+4. Wait for the build and deploy to finish, then open the service URL.
 
-The free instance may take a little time to wake after inactivity. The model
-and dataset are recreated on each deployment; they are intentionally not
-committed to Git.
+Render builds the model from the dataset during deployment. A free instance may
+take a little while to wake after a period of inactivity.
 
-The original notebook is a Kaggle notebook and expects Kaggle's
-`/kaggle/input/` directory. It is not required to run the local app.
+## Project structure
+
+```text
+app.py          FastAPI application and recommendation API
+build_model.py  Dataset download and content-vector model builder
+web/            Frontend HTML, CSS, and JavaScript
+render.yaml     Render Blueprint deployment configuration
+```
+
+The original notebook is intended for Kaggle and expects Kaggle's
+`/kaggle/input/` directory; it is not needed to run the web app.
